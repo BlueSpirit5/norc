@@ -43,8 +43,7 @@ public class VisualizeUCT {
 					for (int i = 0; i < children.length; i++) {	
 						digraph += "\""+children[i].toString() 
 								+ "\" [label=\""+String.format("a:%d Q=%.3f",i,st.Q[i])+"\",shape=\"triangle\"]\n";
-					}
-					System.out.println("State "+ st.state + " at depth "+ st.depth + " Has "+children.length+"children.");
+					}System.out.println("State "+ st.state + " at depth "+ st.depth + " Has "+children.length+"children.");
 					for (int i = 0; i < children.length; i++) {
 						if(!sdrawn.contains(st)){
 							digraph += "\"" + state.toString() + "\" -> \""
@@ -62,12 +61,10 @@ public class VisualizeUCT {
 							digraph += "\""+children[i].toString() + "\" [label=\"s: "+st.childStates[i].toString()+"\",shape=\"box\"]\n";
 							digraph += "\"" + state.toString() + "\" -> \""
 									+ children[i].toString()
-									//+ st.childStates[i].toString() 
 									+ "\"[label=\""
 									+ children[i].sCount + "\"]\n";
 						}
 						queue.add(children[i]);
-						System.out.println(queue.size());
 					}
 					if(!adrawn.contains(st)){ adrawn.add(st);}
 				}
