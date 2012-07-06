@@ -64,8 +64,8 @@ public class DemoQFunction implements DifferentiableQFunction {
 
 	
 	@Override
-	public OutputAndGradient2D evaluate(State inp) {
-		OutputAndGradient2D ret = new OutputAndGradient2D();
+	public OutputAndJacobian evaluate(State inp) {
+		OutputAndJacobian ret = new OutputAndJacobian();
 		ret.y = this.getQ(inp);
 		ret.dy = this.getGradQ(inp);
 		return ret;
@@ -77,7 +77,7 @@ public class DemoQFunction implements DifferentiableQFunction {
 	}
 
   @Override
-  public OutputAndGradient2D evaluate(Object input) {
+  public OutputAndJacobian evaluate(Object input) {
     return evaluate((State)input);
   }
 

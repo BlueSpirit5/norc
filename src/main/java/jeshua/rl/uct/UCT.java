@@ -11,11 +11,19 @@ import jeshua.rl.uct.UCTNodes.*;
  * UCT Planning algorithm. Takes a simulator and search parameters, then call
  * plan() to do UCT planning to estimate Q values at root node.
  * 
+ * This implementation of UCT builds a search tree explicitly. An alternative 
+ * implementation uses a hash function to retain state/depth pairs. The latter method
+ * has the advantage of saving memory, but this tree-based implementation requires 
+ * fewer evaluations of the hash function and has the added benefit of providing easy
+ * visualization of the UCT search tree. If the memory requirements are too high
+ * then the flat implementation would be better. As it stands, the bulk of UCT's 
+ * computation usually lies in the simulation steps and state reward evaluation.
+ * 
  * @author Jeshua Bratman
  */
 public class UCT {	
 	// this is the C value for UCB:
-	public double ucbScaler = 1;
+	public double ucb_scaler = 1;
 	// default value at leave of tree
 	public double leafValue = 0;
 	// default value at the end of an episode
@@ -54,10 +62,8 @@ public class UCT {
 	}
 
 	/**
-	 * Plan starting from a root state.
-	 * 
+	 * Plan starting from a root state and return greedy action.
 	 * @param state
-	 *            Current state.
 	 * @return
 	 */
 	public int planAndAct(State state) {
@@ -84,6 +90,10 @@ public class UCT {
 		return maximizer.getMaxIndex();
 	}
 
+	/**
+	 * Get the current Q value for a given action.
+	 * Note: you must call plan(State) first.
+	 */
 	public double getQ(int action) {
 		return root.Q[action];
 	}
@@ -163,7 +173,7 @@ public class UCT {
 				//if this action has never been tried, give it max_value
 				if (node.saCounts[a] == 0) val = Double.MAX_VALUE;
 				//otherwise use UCB1 rule
-				else val += ucbScaler * Math.sqrt(numerator / node.saCounts[a]);
+				else val += ucb_scaler * Math.sqrt(numerator / node.saCounts[a]);
 
 				maximizer.add(val, a);
 			}

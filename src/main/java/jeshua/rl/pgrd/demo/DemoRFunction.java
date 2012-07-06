@@ -71,8 +71,8 @@ public class DemoRFunction implements DifferentiableRFunction {
 
 	
 	@Override
-	public OutputAndGradient1D evaluate(Object input) {
-		OutputAndGradient1D ret = new OutputAndGradient1D();
+	public OutputAndGradient evaluate(Object input) {
+		OutputAndGradient ret = new OutputAndGradient();
 		SASTriple inp = (SASTriple)input; 
 		ret.y = this.getReward(inp.state1, inp.action, inp.state2);
 		ret.dy = this.getGradR(inp.state1, inp.action, inp.state2);

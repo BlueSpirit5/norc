@@ -13,7 +13,7 @@ import jeshua.rl.uct.demo.*;
 public class DemoQL {
 	public static void main(String[] args) throws InterruptedException {
 		Random rand1 = new Random();
-		int sz = 12;
+		int sz = 6;
 		Maze maze = new Maze(Maze.randomMaze(sz, sz, rand1));   
 		maze.setCell(sz-1, sz-1, Maze.G);
 		DemoSim.maze = maze;

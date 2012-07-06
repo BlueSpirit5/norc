@@ -2,7 +2,7 @@ package jeshua.rl;
 
 /**
  * State used for planning. Must have equality and hashcode functions as well as a copy function
- * so we can manipulate and compare them while planning.
+ * so we can manipulate and compare states while planning.
  * @author Jeshua Bratman
  */
 public abstract class State {

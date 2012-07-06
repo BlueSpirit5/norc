@@ -3,6 +3,11 @@ package jeshua.rl;
 import java.util.Random;
 
 public class Utils {
+	/**
+	 * Sample from a multinomial distribution.
+	 * @param probs - n-length probability vector
+	 * @return value in range [1,n) sampled according to probabilities
+	 */
 	public static int sampleMultinomial(double[] probs, Random random){
 		double dart = random.nextDouble();
 		double sum = 0;

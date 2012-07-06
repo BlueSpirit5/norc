@@ -11,7 +11,10 @@ public interface DifferentiablePolicy extends DifferentiableFunction2D {
 	 *    grad_policy: x num_reward_features array.
 	 *      For each action a, getGradPolicy()[a] is gradient w.r.t. parameters theta
 	 */
-	public OutputAndGradient2D evaluate(State st);
+	public OutputAndJacobian evaluate(State st);
 	
-	public OutputAndGradient2D getCurrentPolicy(); //just return most recent policy and gradient
+	/**
+	 * Returns values from most recent call to evaluate(*)
+	 */
+	public OutputAndJacobian getCurrentPolicy(); //just return most recent policy and gradient
 }

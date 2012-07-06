@@ -1,5 +1,8 @@
 package jeshua.rl;
-
+/**
+ * Provides basic functionality for the agent/environment interaction loop.
+ * @author Jeshua Bratman
+ */
 public class SimpleDriver {
 	public Simulator sim;
 	public Agent ag;
@@ -15,10 +18,15 @@ public class SimpleDriver {
 		this.last_action = -1;
 	}
 	
+	/**
+	 * Take step in environment and provided resulting
+	 * state/reward to agent.
+	 */
 	public void step(){
 		curr_state = sim.getState();
 		double reward = sim.getReward();
 		int action = last_action;
+		
 		if(last_state == null)
 			action = ag.step(curr_state);
 		else

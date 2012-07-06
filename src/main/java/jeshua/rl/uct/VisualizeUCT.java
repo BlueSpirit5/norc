@@ -10,10 +10,9 @@ import jeshua.rl.State;
 import jeshua.rl.uct.UCTNodes.*;
 
 /**
- * Visualize the current UCT planning tree. You must have graphviz and be running linux for this to work.
- * 
+ * Visualize UCT planning tree. You must have graphviz installed with the
+ * dot executable located in /usr/bin/dot.
  * @author Jeshua Bratman
- *
  */
 public class VisualizeUCT {
 
@@ -45,27 +44,28 @@ public class VisualizeUCT {
 								+ "\" [label=\""+String.format("a:%d Q=%.3f",i,st.Q[i])+"\",shape=\"triangle\"]\n";
 					}
 					for (int i = 0; i < children.length; i++) {
-						//if(!sdrawn.contains(st)){
+						if(!sdrawn.contains(st)){
 							digraph += "\"" + state.toString() + "\" -> \""
 									+ children[i].toString()+"\" "							
 									+" [label=\"#"+st.saCounts[i]+"\"]\n";
-						//}
-						queue.add(children[i]);						
+						}
+						//queue.add(children[i]);						
 					}
 					if(!sdrawn.contains(st)){ sdrawn.add(st);}
 				} else { //uct action node
 					UCTActionNode st = ((UCTActionNode) state);
 					final UCTStateNode[] children = st.childNodes;					
 					for (int i = 0; i < st.currBranches; i++) {
-						//if(!adrawn.contains(st)){
+						if(!adrawn.contains(st)){
 							digraph += "\""+children[i].toString() + "\" [label=\"s: "+st.childStates[i].toString()+"\",shape=\"box\"]\n";
 							digraph += "\"" + state.toString() + "\" -> \""
 									+ children[i].toString()
 									//+ st.childStates[i].toString() 
 									+ "\"[label=\""
 									+ children[i].sCount + "\"]\n";
-						//}
+						}
 						queue.add(children[i]);
+						System.out.println(queue.size());
 					}
 					if(!adrawn.contains(st)){ adrawn.add(st);}
 				}
@@ -74,12 +74,12 @@ public class VisualizeUCT {
 
 			//System.out.println(digraph);
 			out.write(digraph);
+			
 			// display the graph
 			out.flush();
 			String tmp_filename = temp.toString();
 			String command = "/usr/bin/dot -Tps " + tmp_filename + " -o "
 					+ tmp_filename + ".ps";
-			// System.out.println(command);
 			Process p = Runtime.getRuntime().exec(command);
 
 			// wait for dotty to close
@@ -90,7 +90,6 @@ public class VisualizeUCT {
 			}
 
 			command = "evince " + tmp_filename + ".ps";
-			// System.out.println(command);
 			p = Runtime.getRuntime().exec(command);
 
 			try {

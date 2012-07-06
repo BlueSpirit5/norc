@@ -40,7 +40,7 @@ public class TestUCT {
 		sim.slip_prob = 0;		
 		
 		UCT planner = new UCT(sim, trajectories, depth,gamma, rand);
-		planner.ucbScaler = 1;	
+		planner.ucb_scaler = 1;	
 				
 		State st = new DemoState(0,0);
 		stepsToComplete = 10;

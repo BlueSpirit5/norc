@@ -29,7 +29,7 @@ public class Demo {
 		int depth = 50;
 		UCT planner = new UCT(simPlan, trajectories, depth,
 				simPlan.getDiscountFactor(), rand2);
-		planner.ucbScaler = 1;
+		planner.ucb_scaler = 1;
 		State currState;		
 		
 		//VisualizeUCT.vis(planner);

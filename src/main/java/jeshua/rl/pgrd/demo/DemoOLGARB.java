@@ -9,7 +9,7 @@ import jeshua.rl.pgrd.RewardFunction;
 import jeshua.rl.uct.demo.*;
 
 /**
- * Runs PGRD UCT on simple maze.
+ * Runs OLGARB on simple maze.
  * @author Jeshua Bratman
  */
 public class DemoOLGARB {
@@ -18,22 +18,18 @@ public class DemoOLGARB {
 		int sz = 6;
 		Maze maze = new Maze(Maze.randomMaze(sz, sz, rand1));   
 		maze.setCell(sz-1, sz-1, Maze.G);
-		DemoSim.maze = maze;
-		
+		DemoSim.maze = maze;		
 		DemoSim simReal = new DemoSim(rand1);
+	
 		
 		// simulator for planning
 		Random rand2 = new Random();
-		DemoQFunction qf = new DemoQFunction();
-		double[] theta = qf.getParams();
-		for(int i=0;i<theta.length;i++)
-			theta[i] = .1;
-		qf.setParams(theta);
-		
 		double alpha = .001;
-		double temperature = .05;
+		double temperature = .1;
 		double gamma = .95;
-		final OLGARB_Agent agent = new OLGARB_Agent(qf,alpha,temperature,gamma,rand2);				
+		//OLGARB with a tabular Q function is simply a tabular policy gradient
+		DemoQFunction qf = new DemoQFunction();
+		final OLGARB_Agent agent = new OLGARB_Agent(qf,alpha,temperature,gamma,true,rand2);				
 		class qrf implements RewardFunction{
 			public double getReward(State st1, int action, State st2){
 				DemoState st = ((DemoState)st2);

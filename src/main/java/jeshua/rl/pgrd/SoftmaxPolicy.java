@@ -1,9 +1,18 @@
 package jeshua.rl.pgrd;
 
 import java.util.Random;
-
 import jeshua.rl.State;
 
+/**
+ * Softmax exploration policy with respect to provided Q function
+ * 
+ * mu(s,a) = exp(Q(s,a)/tau) / sum_a' exp(Q(s,a')/tau) 
+ * 
+ * Provides evaluation of policy and gradients w.r.t. Q-function parameters
+ * for a given state.
+ * 
+ * @author Jeshua Bratman
+ */
 public class SoftmaxPolicy implements DifferentiablePolicy {
   protected DifferentiableQFunction planner;
   protected double temperature;
@@ -17,8 +26,19 @@ public class SoftmaxPolicy implements DifferentiablePolicy {
     this.log_grad_policy = null;		
   }
 
-  public OutputAndGradient2D evaluate(State st) {
-    OutputAndGradient2D qdq = this.planner.evaluate(st);
+  /**
+   * Evaluate policy i.e. probabilities mu(s,a) for each action a at state s,
+   *  and gradients w.r.t. Q function parameters theta for each action.
+   *  
+   *  @return OutputAndGradient2D object containing y and dy
+   *   y = mu(s,*)  
+   *      |actions| array of action probabilities from state s
+   *   dy = dmu(s,*)/dtheta
+   *      |actions| x |theta| Jacobian of policy w.r.t theta
+   *       so, dy[a][i] = dmu(s,a)/dtheta_i (e.g. each dy[a] is the gradient for action a)
+   */
+  public OutputAndJacobian evaluate(State st) {
+    OutputAndJacobian qdq = this.planner.evaluate(st);
     double[][] grad_Q = qdq.dy;
     double[] Q = qdq.y;
     int num_actions = grad_Q.length;
@@ -63,7 +83,7 @@ public class SoftmaxPolicy implements DifferentiablePolicy {
   //Differentiable Function Interface
 
   @Override
-  public OutputAndGradient2D evaluate(Object st) {return evaluate(((State)st));}
+  public OutputAndJacobian evaluate(Object st) {return evaluate(((State)st));}
   @Override
   public int numParams() {
     return this.planner.numParams();
@@ -77,8 +97,8 @@ public class SoftmaxPolicy implements DifferentiablePolicy {
     return this.planner.getParams();
   }
   @Override
-  public OutputAndGradient2D getCurrentPolicy() {
-    OutputAndGradient2D ret = new OutputAndGradient2D();
+  public OutputAndJacobian getCurrentPolicy() {
+    OutputAndJacobian ret = new OutputAndJacobian();
     ret.y= this.policy;
     ret.dy = this.log_grad_policy;
     ret.logspace = false;

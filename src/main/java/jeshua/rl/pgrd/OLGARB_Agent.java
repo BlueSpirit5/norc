@@ -15,21 +15,23 @@ public class OLGARB_Agent implements Agent {
 	private Random random;	
 	
 	/**
-	 * 
+	 * Create OLGARB policy gradient agent
 	 * @param qf           -- q function
 	 * @param gamma        -- reward discount factor
 	 * @param alpha        -- policy gradient learning rate
 	 * @param temperature  -- softmax policy temperature
 	 * @param depth        -- uct planning depth
 	 * @param trajectories -- uct planning trajectory count
+	 * @param use_baseline -- use the baseline estimate (otherwise this is GPOMDP)
 	 */
 	public OLGARB_Agent(DifferentiableQFunction qf,
 			        double alpha, double temperature,			        
-			        double gamma, Random random){
-			this.random = random;
-		 policy          = new SoftmaxPolicy(qf, temperature);
-		 policy_gradient = new OLGARB(policy,alpha,gamma,false);
-		 this.qf = qf;
+			        double gamma, boolean use_baseline, 
+			        Random random){
+		this.random = random;
+		policy          = new SoftmaxPolicy(qf, temperature);
+		policy_gradient = new OLGARB(policy,alpha,gamma,use_baseline);
+		this.qf = qf;
 	}
 	
 	

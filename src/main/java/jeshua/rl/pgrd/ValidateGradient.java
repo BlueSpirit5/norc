@@ -3,14 +3,26 @@ package jeshua.rl.pgrd;
 import java.util.Arrays;
 import java.util.Random;
 
-import jeshua.rl.pgrd.DifferentiableFunction1D.OutputAndGradient1D;
-import jeshua.rl.pgrd.DifferentiableFunction2D.OutputAndGradient2D;
+import jeshua.rl.pgrd.DifferentiableFunction1D.OutputAndGradient;
+import jeshua.rl.pgrd.DifferentiableFunction2D.OutputAndJacobian;
 
+/**
+ * Finite Difference evaluation of gradients and Jacobians. 
+ * @author Jeshua Bratman
+ */
 public class ValidateGradient {
+	
 	public static boolean validate(DifferentiableFunction1D f)
   	 {return validate(f,0.000001,new Random());}
 	public static boolean validate(DifferentiableFunction1D f, double threshold)
   	 {return validate(f,threshold,new Random());}
+	/**
+	 * Compares functional gradient computation to finite difference estimate
+	 * @param f         -- function to evaluate
+	 * @param threshold -- comparison threshold
+	 * @param rand      
+	 * @return success or failure
+	 */
 	public static boolean validate(DifferentiableFunction1D f,double threshold, Random rand){	
 		double delta = 0.01;		
 		int num_trials = 10;
@@ -20,7 +32,7 @@ public class ValidateGradient {
 			Object input = f.generateRandomInput(rand);
 			double[] theta = f.getParams();
 			double[] theta1 = f.getParams().clone();
-			OutputAndGradient1D output = f.evaluate(input);
+			OutputAndGradient output = f.evaluate(input);
 			double[] dy = output.dy.clone();			
 		  if(output.logspace)
         for(int i=0;i<output.dy.length;i++)
@@ -74,10 +86,22 @@ public class ValidateGradient {
 		}
 		return success;
 	}
+	
+	
+
 	public static boolean validate(DifferentiableFunction2D f)
 	{return validate(f,0.0001,new Random());}
 	public static boolean validate(DifferentiableFunction2D f,double threshold)
 	{return validate(f,threshold,new Random());}
+	
+	
+	/**
+	 * Compare functional Jacobian computation to finite difference estimate.
+	 * @param f          -- vector-valued function with Jacobian evaluation 
+	 * @param threshold  -- comparison threshold
+	 * @param rand
+	 * @return success or failure
+	 */
 	public static boolean validate(DifferentiableFunction2D f,double threshold, Random rand){
 		double delta = 0.0001;		
 		int num_trials = 10;		
@@ -90,7 +114,7 @@ public class ValidateGradient {
 			Object input = f.generateRandomInput(rand);
 
 			//compute analytic gradient
-			OutputAndGradient2D out = f.evaluate(input);
+			OutputAndJacobian out = f.evaluate(input);
 			double[][] dy = new double[out.dy.length][out.dy[0].length];
 			for(int i=0;i<dy.length;i++)
 			  for(int j=0;j<dy[i].length;j++)

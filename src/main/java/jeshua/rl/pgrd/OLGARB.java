@@ -5,9 +5,14 @@ import java.util.Arrays;
 import jeshua.rl.State;
 
 /**
- * OLPOMDP Policy Gradient Algorithm
+ * OLGARB Policy Gradient Algorithm
  * @author Jeshua Bratman
- *
+ * 
+ * See:
+ *  The optimal reward baseline for gradient-based reinforcement learning 
+ *  by Lex Weaver and Nigel Tao
+ *  UAI'01 Proceedings of the Seventeenth Conference on Uncertainty in Artificial Intelligence
+ *  
  */
 public class OLGARB {
 	private DifferentiablePolicy policy;
@@ -40,21 +45,27 @@ public class OLGARB {
 	  this.baseline = 0;
 	  this.timestep = 0;	  
 	}
-	
-	public void learn(State st1, int a1, double reward){	
+	/**
+	 * Update policy parameters after taking action a1 in state st1 
+	 * and receiving reward r
+	 * @param st
+	 * @param a
+	 * @param r
+	 */
+	public void learn(State st, int a, double r){	
 		double[] mu = policy.getCurrentPolicy().y; 
 		double[][] dmu = policy.getCurrentPolicy().dy;
 		
 		timestep++;
-		baseline += (1d/timestep) * (reward - baseline);//rolling average			
+		baseline += (1d/timestep) * (r - baseline);//rolling average			
 		
 		for(int i = 0; i < num_params; ++i){
-			Z[i] = gamma * Z[i] + dmu[a1][i]/mu[a1];
+			Z[i] = gamma * Z[i] + dmu[a][i]/mu[a];
 		}
 		this.theta = this.policy.getParams().clone();
 		double delta = 0;
-		if (use_baseline) delta = alpha * (reward-baseline);
-		else delta = alpha * reward;
+		if (use_baseline) delta = alpha * (r-baseline);
+		else delta = alpha * r;
 		
 		for(int i=0;i<num_params;i++)
 			theta[i] += delta * Z[i];

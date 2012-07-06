@@ -19,7 +19,7 @@ public class PGRD_UCT implements Agent {
 	private Random random;	
 
 	/**
-	 * 
+	 * Policy Gradient for Reward Design using UCT and OLGARB
 	 * @param sim          -- simulator to give to planner
 	 * @param rf           -- reward function
 	 * @param gamma        -- reward discount factor
