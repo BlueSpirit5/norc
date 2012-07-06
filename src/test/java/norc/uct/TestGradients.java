@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import java.util.Random;
 
 
+import norc.domains.demo.DemoSim;
 import norc.pgrd.RewardDifferentiableUCT;
 import norc.pgrd.SoftmaxPolicy;
 import norc.pgrd.ValidateGradient;
 import norc.pgrd.demo.DemoQFunction;
 import norc.pgrd.demo.DemoRFunction;
-import norc.uct.demo.DemoSim;
 
 import org.junit.Test;
 

@@ -9,7 +9,11 @@ import norc.pgrd.DifferentiableRFunction.SASTriple;
 import norc.uct.UCT;
 import norc.uct.UCTNodes.*;
 
-
+/**
+ * UCT Planning and Gradient evaluation. 
+ * 
+ * @author Jeshua Bratman
+ */
 public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunction {
 
   protected double[][] dQdt;
@@ -44,7 +48,7 @@ public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunct
   
   
   /**
-   * Plan starting from given state and return the Q value and Jacobian
+   * Plan starting from given state and return the Q value and Gradients for each action.
    * 
    * @param state
    * @return OutputAndGradient2d

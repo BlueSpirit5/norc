@@ -1,6 +1,8 @@
 package norc.uct.demo;
 import java.util.Random;
 
+import norc.domains.demo.DemoSim;
+import norc.domains.demo.Maze;
 import norc.uct.UCT;
 import norc.uct.VisualizeUCT;
 
@@ -9,7 +11,7 @@ import norc.uct.VisualizeUCT;
  * Runs one step of UCT in tiny problem and displays planning tree.
  * @author Jeshua Bratman
   */
-public class Demo2 {
+public class DemoVisUCTTree {
 	public static void main(String[] args) throws InterruptedException {
 
         Maze maze = new Maze(new int[][]{{0},{0},{0},{0}});

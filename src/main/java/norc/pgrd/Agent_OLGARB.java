@@ -3,43 +3,39 @@ package norc.pgrd;
 import java.util.Random;
 
 import norc.Agent;
-import norc.Simulator;
 import norc.State;
 import norc.Utils;
 
 
-public class PGRD_UCT implements Agent {
-
-	private RewardDifferentiableUCT planner;
+public class Agent_OLGARB implements Agent {
+	
+  private DifferentiableQFunction qf;
 	private SoftmaxPolicy           policy;
 	private OLGARB                  policy_gradient;
-
-	private DifferentiableRFunction rf;
-	public DifferentiableRFunction getRF(){return rf;}
-
+		
 	private Random random;	
-
+	
 	/**
-	 * Policy Gradient for Reward Design using UCT and OLGARB
-	 * @param sim          -- simulator to give to planner
-	 * @param rf           -- reward function
+	 * Create OLGARB policy gradient agent
+	 * @param qf           -- q function
 	 * @param gamma        -- reward discount factor
 	 * @param alpha        -- policy gradient learning rate
 	 * @param temperature  -- softmax policy temperature
 	 * @param depth        -- uct planning depth
 	 * @param trajectories -- uct planning trajectory count
+	 * @param use_baseline -- use the baseline estimate (otherwise this is GPOMDP)
 	 */
-	public PGRD_UCT(Simulator sim, DifferentiableRFunction rf,
-			double alpha, double temperature,
-			int trajectories, int depth, 
-			double gamma, Random random){
+	public Agent_OLGARB(DifferentiableQFunction qf,
+			        double alpha, double temperature,			        
+			        double gamma, boolean use_baseline, 
+			        Random random){
 		this.random = random;
-		planner         = new RewardDifferentiableUCT(sim, rf, trajectories, depth, gamma, random);
-		policy          = new SoftmaxPolicy(planner, temperature);
-		policy_gradient = new OLGARB(policy,alpha,gamma,false);	
-		this.rf = rf;
+		policy          = new SoftmaxPolicy(qf, temperature);
+		policy_gradient = new OLGARB(policy,alpha,gamma,use_baseline);
+		this.qf = qf;
 	}
-
+	
+	
 	/**
 	 * Plans from given state, updates reward parameters, returns chosen action
 	 * @param st     -- current state
@@ -52,12 +48,14 @@ public class PGRD_UCT implements Agent {
 	}
 	public int step(State st1, int a1, State st2, double reward){
 		this.policy_gradient.learn(st1, a1, reward);		
+		
 		int new_action;
 		if(st2.isAbsorbing()){
-			this.policy_gradient.initEpisode();
-			new_action = -1;
+		  this.policy_gradient.initEpisode();
+		  new_action = -1;
 		} else
-			new_action = step(st2);		
+		  new_action = step(st2);		
 		return new_action;
-	}
+	}		
+	public DifferentiableQFunction getQF(){return qf;}	
 }

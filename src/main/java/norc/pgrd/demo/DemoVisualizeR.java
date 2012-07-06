@@ -5,10 +5,10 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import norc.domains.demo.DemoState;
+import norc.domains.demo.Maze;
+import norc.domains.demo.MazeGFX;
 import norc.pgrd.RewardFunction;
-import norc.uct.demo.DemoState;
-import norc.uct.demo.Maze;
-import norc.uct.demo.MazeGFX;
 
 
 

@@ -1,4 +1,4 @@
-package norc.uct.demo;
+package norc.domains.demo;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

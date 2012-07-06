@@ -2,10 +2,10 @@ package norc.uct;
 import static org.junit.Assert.*;
 
 import norc.State;
+import norc.domains.demo.DemoSim;
+import norc.domains.demo.DemoState;
+import norc.domains.demo.Maze;
 import norc.uct.UCT;
-import norc.uct.demo.DemoSim;
-import norc.uct.demo.DemoState;
-import norc.uct.demo.Maze;
 
 import org.junit.Test;
 

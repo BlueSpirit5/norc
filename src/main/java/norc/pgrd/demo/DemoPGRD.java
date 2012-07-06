@@ -3,8 +3,10 @@ package norc.pgrd.demo;
 import java.util.Random;
 
 import norc.SimpleDriver;
-import norc.pgrd.PGRD_UCT;
-import norc.uct.demo.*;
+import norc.domains.demo.DemoSim;
+import norc.domains.demo.DemoState;
+import norc.domains.demo.Maze;
+import norc.pgrd.Agent_PGRDUCT;
 
 
 /**
@@ -31,7 +33,7 @@ public class DemoPGRD {
 		double alpha = .0001;
 		double temperature = .05;
 		double gamma = .95;
-		PGRD_UCT pgrd = new PGRD_UCT(simPlan,rf,alpha,temperature,trajectories,depth,gamma,rand2);		
+		Agent_PGRDUCT pgrd = new Agent_PGRDUCT(simPlan,rf,alpha,temperature,trajectories,depth,gamma,rand2);		
 		DemoVisualizeR p = new DemoVisualizeR(DemoSim.maze,pgrd.getRF());
 		SimpleDriver driver = new SimpleDriver(simReal,pgrd);
 		for (int timestep = 0;; timestep++) {

@@ -4,10 +4,11 @@ import java.util.Random;
 
 import norc.SimpleDriver;
 import norc.State;
-import norc.pgrd.OLGARB_Agent;
+import norc.domains.demo.DemoSim;
+import norc.domains.demo.DemoState;
+import norc.domains.demo.Maze;
+import norc.pgrd.Agent_OLGARB;
 import norc.pgrd.RewardFunction;
-import norc.uct.demo.*;
-
 
 /**
  * Runs OLGARB on simple maze.
@@ -30,7 +31,7 @@ public class DemoOLGARB {
 		double gamma = .95;
 		//OLGARB with a tabular Q function is simply a tabular policy gradient
 		DemoQFunction qf = new DemoQFunction();
-		final OLGARB_Agent agent = new OLGARB_Agent(qf,alpha,temperature,gamma,true,rand2);				
+		final Agent_OLGARB agent = new Agent_OLGARB(qf,alpha,temperature,gamma,true,rand2);				
 		class qrf implements RewardFunction{
 			public double getReward(State st1, int action, State st2){
 				DemoState st = ((DemoState)st2);
@@ -47,7 +48,6 @@ public class DemoOLGARB {
 		DemoVisualizeR p = new DemoVisualizeR(DemoSim.maze,new qrf());
 		SimpleDriver driver = new SimpleDriver(simReal,agent);
 		for (int timestep = 0; timestep < 2000000; timestep++) {
-			System.out.println(timestep);
 			driver.step();			
 			DemoState curr_state = (DemoState)driver.curr_state;
 			if(timestep > 10000 || ((timestep%30)==0))

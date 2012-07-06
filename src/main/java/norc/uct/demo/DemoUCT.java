@@ -3,6 +3,8 @@ package norc.uct.demo;
 import java.util.Random;
 
 import norc.State;
+import norc.domains.demo.DemoSim;
+import norc.domains.demo.Maze;
 import norc.uct.UCT;
 
 
@@ -10,7 +12,7 @@ import norc.uct.UCT;
  * Runs UCT on simple episodic maze.
  * @author Jeshua Bratman
  */
-public class Demo {
+public class DemoUCT {
 	public static void main(String[] args) throws InterruptedException {
 		
 		// "real" world

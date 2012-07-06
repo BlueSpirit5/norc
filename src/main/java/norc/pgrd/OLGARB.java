@@ -10,8 +10,7 @@ import norc.State;
  * @author Jeshua Bratman
  * 
  * See:
- *  The optimal reward baseline for gradient-based reinforcement learning 
- *  by Lex Weaver and Nigel Tao
+ *  The optimal reward baseline for gradient-based reinforcement learning by Lex Weaver and Nigel Tao
  *  UAI'01 Proceedings of the Seventeenth Conference on Uncertainty in Artificial Intelligence
  *  
  */

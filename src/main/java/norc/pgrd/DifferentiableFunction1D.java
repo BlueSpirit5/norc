@@ -3,10 +3,10 @@ package norc.pgrd;
 import java.util.Random;
 
 /**
- * DifferentiableFunction1D represents a scalar valued function for which we
+ * DifferentiableFunction1D represents a scalar-valued function for which we
  * can evaluate the function and gradient w.r.t. its parameters theta.
  *
- * Implementing this interface allows the use of gradient validation.
+ * Implementing this interface allows the use of gradient validation. (See ValidateGradient.java)
  * 
  * @author Jeshua Bratman
  */

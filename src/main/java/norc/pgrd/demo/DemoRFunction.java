@@ -3,8 +3,9 @@ package norc.pgrd.demo;
 import java.util.Random;
 
 import norc.State;
+import norc.domains.demo.DemoSim;
+import norc.domains.demo.DemoState;
 import norc.pgrd.DifferentiableRFunction;
-import norc.uct.demo.*;
 
 
 /**

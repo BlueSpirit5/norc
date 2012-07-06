@@ -1,4 +1,4 @@
-package norc.uct.demo;
+package norc.domains.demo;
 import java.util.Random;
 
 import norc.Simulator;
