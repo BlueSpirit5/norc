@@ -10,7 +10,7 @@ import jeshua.rl.uct.demo.*;
  * Runs PGRD UCT on simple maze.
  * @author Jeshua Bratman
  */
-public class DemoQ {
+public class DemoQL {
 	public static void main(String[] args) throws InterruptedException {
 		Random rand1 = new Random();
 		int sz = 12;

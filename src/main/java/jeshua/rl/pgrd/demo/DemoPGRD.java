@@ -10,7 +10,7 @@ import jeshua.rl.uct.demo.*;
  * Runs PGRD UCT on simple maze.
  * @author Jeshua Bratman
  */
-public class Demo {
+public class DemoPGRD {
 	public static void main(String[] args) throws InterruptedException {
 		// real world
 		Random rand1 = new Random();
@@ -23,7 +23,7 @@ public class Demo {
 		// simulator for planning
 		Random rand2 = new Random();
 		DemoSim simPlan = new DemoSim(rand2);
-		DemoRewardFunction rf = new DemoRewardFunction();
+		DemoRFunction rf = new DemoRFunction();
 				
 		int trajectories = 50;		
 		int depth = 3;

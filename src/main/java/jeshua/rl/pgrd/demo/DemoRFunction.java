@@ -15,13 +15,13 @@ import jeshua.rl.uct.demo.*;
  * @author jeshua
  *
  */
-public class DemoRewardFunction implements DifferentiableRFunction {
+public class DemoRFunction implements DifferentiableRFunction {
 	private int num_params;
 	private double[] theta;
 	private double[] dtheta;
 	
 	
-	public DemoRewardFunction(){
+	public DemoRFunction(){
 		this.num_params = DemoSim.maze.width() * DemoSim.maze.height();
 		this.theta = new double[num_params];
 		this.dtheta = new double[num_params];

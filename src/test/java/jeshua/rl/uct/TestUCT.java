@@ -27,6 +27,7 @@ public class TestUCT {
     int depth = 20;
     double thresh = .01;
 
+    
 
 	
 	@Test
@@ -34,8 +35,8 @@ public class TestUCT {
 		int stepsToComplete = 11;
 		
 		double gamma = .99; 
-				
-		DemoSim sim = new DemoSim(rand,maze);
+		DemoSim.maze = maze;
+		DemoSim sim = new DemoSim(rand);
 		sim.slip_prob = 0;		
 		
 		UCT planner = new UCT(sim, trajectories, depth,gamma, rand);
@@ -43,11 +44,11 @@ public class TestUCT {
 				
 		State st = new DemoState(0,0);
 		stepsToComplete = 10;
-		planner.plan(st);
+		planner.planAndAct(st);
 		assertEquals(planner.getQ(2),Math.pow(gamma,stepsToComplete),thresh);
 		st = new DemoState(0,2);
 		stepsToComplete = 2;
-		planner.plan(st);
+		planner.planAndAct(st);
 		assertEquals(planner.getQ(2),Math.pow(gamma,stepsToComplete),thresh);	
 		for(int i = 0; i<4;i++)
 			System.out.printf("%.4f ",planner.getQ(i));
