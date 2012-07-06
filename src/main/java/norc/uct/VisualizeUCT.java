@@ -44,13 +44,14 @@ public class VisualizeUCT {
 						digraph += "\""+children[i].toString() 
 								+ "\" [label=\""+String.format("a:%d Q=%.3f",i,st.Q[i])+"\",shape=\"triangle\"]\n";
 					}
+					System.out.println("State "+ st.state + " at depth "+ st.depth + " Has "+children.length+"children.");
 					for (int i = 0; i < children.length; i++) {
 						if(!sdrawn.contains(st)){
 							digraph += "\"" + state.toString() + "\" -> \""
 									+ children[i].toString()+"\" "							
 									+" [label=\"#"+st.saCounts[i]+"\"]\n";
 						}
-						//queue.add(children[i]);						
+						queue.add(children[i]);						
 					}
 					if(!sdrawn.contains(st)){ sdrawn.add(st);}
 				} else { //uct action node

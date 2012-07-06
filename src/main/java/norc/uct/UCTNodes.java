@@ -17,7 +17,7 @@ public class UCTNodes {
 		private int numActions;
 		private HashMap<StateAtDepth, UCTStateNode> activeNodes;
 		public boolean hashStates = true;
-		public boolean considerDepth = false;
+		public boolean considerDepth = true;
 
 		public UCTNodeStore(int numActions) {
 			this.numActions = numActions;
@@ -40,6 +40,8 @@ public class UCTNodes {
 				return activeNodes.get(sad);
 			} else {
 				UCTStateNode n = new UCTStateNode(this, numActions);
+				n.state = state;
+				n.depth = depth;
 				if (hashStates)
 					activeNodes.put(sad, n);
 				return n;
@@ -102,6 +104,8 @@ public class UCTNodes {
 		
 	    private final UCTNodeStore nodeCache;
 	    public double Q[]; 
+	    public State state;
+	    public int depth;
 	    public int sCount;//number of times visiting this state
 	    public int saCounts[];//number of times visiting this state on each action
 

@@ -28,14 +28,12 @@ public class DemoUCT {
 		Random rand2 = new Random();
 		DemoSim simPlan = new DemoSim(rand2);
 
-		int trajectories = 5000;		
-		int depth = 50;
+		int trajectories = 500;		
+		int depth = 10;
 		UCT planner = new UCT(simPlan, trajectories, depth,
 				simPlan.getDiscountFactor(), rand2);
 		planner.ucb_scaler = 1;
 		State currState;		
-		
-		//VisualizeUCT.vis(planner);
 
 		for (int timestep = 0; timestep < 200000; timestep++) {
 			currState = simReal.getState();
