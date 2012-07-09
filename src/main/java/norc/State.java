@@ -5,11 +5,9 @@ package norc;
  * so we can manipulate and compare states while planning.
  * @author Jeshua Bratman
  */
-public abstract class State {
-	@Override
+public interface State {
 	public abstract boolean equals(Object other);
 
-	@Override
 	public abstract int hashCode();
 
 	public abstract State copy();

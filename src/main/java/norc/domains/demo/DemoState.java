@@ -6,14 +6,14 @@ import norc.State;
  * 2d coordinate state with hash and equals.
  * @author Jeshua Bratman
  */
-public class DemoState extends State {
+public class DemoState implements State {
 	public int x,y;
 	boolean epEnd = false;
 	
 	public DemoState(int x, int y){this.x = x;this.y = y;}
 	
 	@Override
-	public State copy() {
+	public DemoState copy() {
 		DemoState n = new DemoState(this.x,this.y);
 		n.epEnd = this.epEnd;
 		return n;

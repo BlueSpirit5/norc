@@ -7,11 +7,11 @@ import norc.State;
 import norc.Utils;
 
 
-public class Agent_OLGARB implements Agent {
+public class Agent_OLGARB<T extends State> implements Agent<T> {
 	
-  private DifferentiableQFunction qf;
-	private SoftmaxPolicy           policy;
-	private OLGARB                  policy_gradient;
+	private DifferentiableQFunction<T> qf;
+	private SoftmaxPolicy<T>           policy;
+	private OLGARB<T>                  policy_gradient;
 		
 	private Random random;	
 	
@@ -25,13 +25,13 @@ public class Agent_OLGARB implements Agent {
 	 * @param trajectories -- uct planning trajectory count
 	 * @param use_baseline -- use the baseline estimate (otherwise this is GPOMDP)
 	 */
-	public Agent_OLGARB(DifferentiableQFunction qf,
+	public Agent_OLGARB(DifferentiableQFunction<T> qf,
 			        double alpha, double temperature,			        
 			        double gamma, boolean use_baseline, 
 			        Random random){
 		this.random = random;
-		policy          = new SoftmaxPolicy(qf, temperature);
-		policy_gradient = new OLGARB(policy,alpha,gamma,use_baseline);
+		policy          = new SoftmaxPolicy<T>(qf, temperature);
+		policy_gradient = new OLGARB<T>(policy,alpha,gamma,use_baseline);
 		this.qf = qf;
 	}
 	
@@ -42,11 +42,11 @@ public class Agent_OLGARB implements Agent {
 	 * @param reward -- objective reward sample
 	 * @return chosen action
 	 */
-	public int step(State st1){
+	public int step(T st1){
 		policy.evaluate(st1);
 		return Utils.sampleMultinomial(policy.getCurrentPolicy().y,this.random);
 	}
-	public int step(State st1, int a1, State st2, double reward){
+	public int step(T st1, int a1, T st2, double reward){
 		this.policy_gradient.learn(st1, a1, reward);		
 		
 		int new_action;
@@ -57,5 +57,5 @@ public class Agent_OLGARB implements Agent {
 		  new_action = step(st2);		
 		return new_action;
 	}		
-	public DifferentiableQFunction getQF(){return qf;}	
+	public DifferentiableQFunction<T> getQF(){return qf;}	
 }

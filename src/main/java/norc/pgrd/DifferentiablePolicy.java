@@ -2,7 +2,7 @@ package norc.pgrd;
 
 import norc.State;
 
-public interface DifferentiablePolicy extends DifferentiableFunction2D {	
+public interface DifferentiablePolicy<T extends State> extends DifferentiableFunction2D<T> {	
 	/**
 	 * Update policy and gradients for a given state.
 	 * @param st - state to plan from
@@ -11,7 +11,7 @@ public interface DifferentiablePolicy extends DifferentiableFunction2D {
 	 *    grad_policy: x num_reward_features array.
 	 *      For each action a, getGradPolicy()[a] is gradient w.r.t. parameters theta
 	 */
-	public OutputAndJacobian evaluate(State st);
+	public OutputAndJacobian evaluate(T st);
 	
 	/**
 	 * Returns values from most recent call to evaluate(*)

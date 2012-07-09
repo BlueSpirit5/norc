@@ -10,13 +10,13 @@ import java.util.Random;
  * 
  * @author Jeshua Bratman
  */
-public interface DifferentiableFunction1D extends ParameterizedFunction{
+public interface DifferentiableFunction1D<T> extends ParameterizedFunction{
 		
 	/**
 	 * Evaluate this function's output and the gradient at a given input. 
 	 * @param input - arbitrary input object 
 	 */
-	public OutputAndGradient evaluate(Object input);
+	public OutputAndGradient evaluate(T input);
 	public static class OutputAndGradient{
 		public double   y;
 		public double[] dy;//dy/dtheta or log(dy/dtheta) if gradient is in logspace
@@ -27,5 +27,5 @@ public interface DifferentiableFunction1D extends ParameterizedFunction{
 	 * Provide a sample random input object to the function. Required for
 	 * gradient checking code.
 	 */
-	public Object generateRandomInput(Random rand);
+	public T generateRandomInput(Random rand);
 }

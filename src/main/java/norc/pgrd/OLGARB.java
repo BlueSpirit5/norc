@@ -14,8 +14,8 @@ import norc.State;
  *  UAI'01 Proceedings of the Seventeenth Conference on Uncertainty in Artificial Intelligence
  *  
  */
-public class OLGARB {
-	private DifferentiablePolicy policy;
+public class OLGARB<T extends State> {
+	private DifferentiablePolicy<T> policy;
     private double alpha;        //learning rate
     private double gamma;        //discount factor
     private double baseline;     //baseline
@@ -27,7 +27,7 @@ public class OLGARB {
     private double [] theta;     //policy parameterization
     
     
-	public OLGARB(DifferentiablePolicy policy, double alpha, double gamma,boolean use_baseline){
+	public OLGARB(DifferentiablePolicy<T> policy, double alpha, double gamma,boolean use_baseline){
 		this.policy = policy;
 		this.alpha = alpha;
 		this.gamma = gamma;
@@ -37,7 +37,7 @@ public class OLGARB {
 		this.Z = new double[num_params];
 		this.initEpisode();
 	}
-	public OLGARB(DifferentiablePolicy policy, double alpha, double gamma)
+	public OLGARB(DifferentiablePolicy<T> policy, double alpha, double gamma)
 	{this(policy,alpha,gamma,false);};    
 	
 	public void initEpisode (){	  

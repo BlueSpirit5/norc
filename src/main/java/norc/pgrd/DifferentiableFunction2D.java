@@ -8,13 +8,13 @@ import java.util.Random;
  * 
  * @author Jeshua Bratman
  */
-public interface DifferentiableFunction2D extends ParameterizedFunction{	
+public interface DifferentiableFunction2D<T> extends ParameterizedFunction{	
 	
 	/**
 	 * Evaluate this function's output and the Jacobian at a given input. 
 	 * @param input - arbitrary input object 
 	 */
-	public OutputAndJacobian evaluate(Object input);
+	public OutputAndJacobian evaluate(T input);
 	public static class OutputAndJacobian{
 	  //y is the output of this vector-valued function
 		public double[]   y;
@@ -26,5 +26,5 @@ public interface DifferentiableFunction2D extends ParameterizedFunction{
 	 * Provide a sample random input object to the function. Required for
 	 * gradient checking code.
 	 */
-	public Object generateRandomInput(Random rand);
+	public T generateRandomInput(Random rand);
 }

@@ -2,6 +2,7 @@ package norc.pgrd.demo;
 
 import java.util.Random;
 
+import norc.SASTriple;
 import norc.State;
 import norc.domains.demo.DemoSim;
 import norc.domains.demo.DemoState;
@@ -17,7 +18,7 @@ import norc.pgrd.DifferentiableRFunction;
  * @author jeshua
  *
  */
-public class DemoRFunction implements DifferentiableRFunction {
+public class DemoRFunction implements DifferentiableRFunction<DemoState> {
 	private int num_params;
 	private double[] theta;
 	private double[] dtheta;
@@ -62,9 +63,8 @@ public class DemoRFunction implements DifferentiableRFunction {
 	 * 0's everywhere else
 	 */
 	@Override
-	public double[] getGradR(State state1, int action, State state2) {
-		DemoState s = (DemoState)state2;
-		int t = s.y * DemoSim.maze.width() + s.x;
+	public double[] getGradR(DemoState state1, int action, DemoState state2) {
+		int t = state2.y * DemoSim.maze.width() + state2.x;
 		for(int i=0;i<this.num_params;i++)
 			this.dtheta[i] = 0;
 		this.dtheta[t] = 1;
@@ -73,17 +73,16 @@ public class DemoRFunction implements DifferentiableRFunction {
 
 	
 	@Override
-	public OutputAndGradient evaluate(Object input) {
+	public OutputAndGradient evaluate(SASTriple<DemoState> inp) {
 		OutputAndGradient ret = new OutputAndGradient();
-		SASTriple inp = (SASTriple)input; 
 		ret.y = this.getReward(inp.state1, inp.action, inp.state2);
 		ret.dy = this.getGradR(inp.state1, inp.action, inp.state2);
 		return ret;
 	}
 	
 	@Override
-	public Object generateRandomInput(Random rand){
-		SASTriple inp = new SASTriple();
+	public SASTriple<DemoState> generateRandomInput(Random rand){
+		SASTriple<DemoState> inp = new SASTriple<DemoState>();
 		inp.state1 = new DemoState(rand.nextInt(DemoSim.maze.width()),rand.nextInt(DemoSim.maze.height()));
 		inp.action = rand.nextInt(DemoSim.num_actions);
 		//random state2

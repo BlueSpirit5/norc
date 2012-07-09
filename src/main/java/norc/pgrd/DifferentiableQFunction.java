@@ -6,7 +6,7 @@ import norc.State;
  * Planner that computes Q value and gradients w.r.t. parameters theta.
  * @author Jeshua Bratman
  */
-public interface DifferentiableQFunction extends DifferentiableFunction2D {		
+public interface DifferentiableQFunction<T extends State> extends DifferentiableFunction2D<T> {		
 	/**
 	 * Update Q values and Q value gradients for a given state.
      *  y = Q(s,*)
@@ -16,5 +16,5 @@ public interface DifferentiableQFunction extends DifferentiableFunction2D {
 	 *       Jacobian of the Q function w.r.t. reward function parameters theta
 	 *       |actions| x |theta| matrix where dQdt[a][i] is dQ(s,a) / dtheta_i
 	 **/
-	public OutputAndJacobian evaluate(State st);
+	public OutputAndJacobian evaluate(T st);
 }

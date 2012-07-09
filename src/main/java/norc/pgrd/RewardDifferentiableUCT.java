@@ -5,7 +5,7 @@ import java.util.Random;
 
 import norc.Simulator;
 import norc.State;
-import norc.pgrd.DifferentiableRFunction.SASTriple;
+import norc.SASTriple;
 import norc.uct.UCT;
 import norc.uct.UCTNodes.*;
 
@@ -14,13 +14,13 @@ import norc.uct.UCTNodes.*;
  * 
  * @author Jeshua Bratman
  */
-public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunction {
+public class RewardDifferentiableUCT<T extends State> extends UCT implements DifferentiableQFunction<T> {
 
   protected double[][] dQdt;
   protected double[][] dRdt;
   protected double[] dQdt_tmp;
   protected int num_params;
-  protected DifferentiableRFunction rf;
+  protected DifferentiableRFunction<T> rf;
 
   /**
    * Construct a UCT planner. 
@@ -32,7 +32,7 @@ public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunct
    * @param gamma        -- Discount factor
    * @param random       -- Random number generator for choosing planning actions
    */
-  public RewardDifferentiableUCT(Simulator sim, DifferentiableRFunction diffRF, 
+  public RewardDifferentiableUCT(Simulator sim, DifferentiableRFunction<T> diffRF, 
 		  int trajectories, int depth, double gamma, Random random) {
     super(sim, trajectories, depth, gamma, random);
     this.rf = diffRF;
@@ -59,14 +59,15 @@ public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunct
    *       Jacobian of the Q function w.r.t. reward function parameters theta
    *       |actions| x |theta| matrix where dQdt[a][i] is dQ(s,a) / dtheta_i
    */
-  public OutputAndJacobian evaluate(State state) {
+public OutputAndJacobian evaluate(T st) {
     cache.clearHash();		
+    State state = (State)st;
     this.rootState = state.copy();
     this.root = cache.checkout(rootState,0);
     for (int i = 0; i < numTrajectories; ++i) {
       simulator.setState(state.copy());
-      Arrays.fill(dQdt_tmp, 0);
-      plan(state.copy(), root, 0);
+      Arrays.fill(dQdt_tmp, 0);      
+      search(st, root, 0);
     }    
     
     OutputAndJacobian ret = new OutputAndJacobian();
@@ -79,7 +80,7 @@ public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunct
   /**
    * Recursive UCT planning step and gradient calculation.
    */
-  protected double plan(State state, UCTStateNode node, int depth) {
+  protected double search(T state, UCTStateNode node, int depth) {
     // BASE CASES:
     if (state.isAbsorbing()) {// end of episode
       Arrays.fill(dRdt[depth],0);
@@ -93,8 +94,10 @@ public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunct
       // simulate an action
       int action = getPlanningAction(node);
       simulator.takeAction(action);
-      // take snapshot of current state of simulator			
-      State state2 = simulator.getState().copy();	 
+      // take snapshot of current state of simulator      			
+      @SuppressWarnings("unchecked")
+      T state2 = (T)simulator.getState().copy();	 
+      
       double r = this.rf.getReward(state,action,state2);
       UCTStateNode child = node.getChildNode(action, state2,depth+1);
       // calculate Q via recursion
@@ -136,10 +139,6 @@ public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunct
   //Differentiable Function Interface
 
   @Override
-  public OutputAndJacobian evaluate(Object state) {
-	  return evaluate((State)state);
-  }  
-  @Override
   public int numParams() {
 	  return this.rf.numParams();
   }
@@ -152,8 +151,8 @@ public class RewardDifferentiableUCT extends UCT implements DifferentiableQFunct
 	  return this.rf.getParams();
   }
   @Override
-  public Object generateRandomInput(Random rand) {
-	  SASTriple rt = (SASTriple)rf.generateRandomInput(rand);
+  public T generateRandomInput(Random rand) {
+	  SASTriple<T> rt = rf.generateRandomInput(rand);
 	  return rt.state2;
   }
 }

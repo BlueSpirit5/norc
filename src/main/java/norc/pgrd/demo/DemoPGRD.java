@@ -33,9 +33,9 @@ public class DemoPGRD {
 		double alpha = .0001;
 		double temperature = .05;
 		double gamma = .95;
-		Agent_PGRDUCT pgrd = new Agent_PGRDUCT(simPlan,rf,alpha,temperature,trajectories,depth,gamma,rand2);		
+		Agent_PGRDUCT<DemoState> pgrd = new Agent_PGRDUCT<DemoState>(simPlan,rf,alpha,temperature,trajectories,depth,gamma,rand2);		
 		DemoVisualizeR p = new DemoVisualizeR(DemoSim.maze,pgrd.getRF());
-		SimpleDriver driver = new SimpleDriver(simReal,pgrd);
+		SimpleDriver<DemoState> driver = new SimpleDriver<DemoState>(simReal,pgrd);
 		for (int timestep = 0;; timestep++) {
 			driver.step();			
 			DemoState curr_state = (DemoState)driver.curr_state;

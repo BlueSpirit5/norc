@@ -13,9 +13,9 @@ import norc.pgrd.DifferentiableFunction2D.OutputAndJacobian;
  */
 public class ValidateGradient {
 	
-	public static boolean validate(DifferentiableFunction1D f)
+	public static <T> boolean validate(DifferentiableFunction1D<T> f)
   	 {return validate(f,0.000001,new Random());}
-	public static boolean validate(DifferentiableFunction1D f, double threshold)
+	public static <T> boolean validate(DifferentiableFunction1D<T> f, double threshold)
   	 {return validate(f,threshold,new Random());}
 	/**
 	 * Compares functional gradient computation to finite difference estimate
@@ -24,13 +24,13 @@ public class ValidateGradient {
 	 * @param rand      
 	 * @return success or failure
 	 */
-	public static boolean validate(DifferentiableFunction1D f,double threshold, Random rand){	
+	public static <T> boolean validate(DifferentiableFunction1D<T> f,double threshold, Random rand){	
 		double delta = 0.01;		
 		int num_trials = 10;
 		
 		boolean success = true;
 		for(int trials=0;trials<num_trials;trials++){
-			Object input = f.generateRandomInput(rand);
+			T input = f.generateRandomInput(rand);
 			double[] theta = f.getParams();
 			double[] theta1 = f.getParams().clone();
 			OutputAndGradient output = f.evaluate(input);
@@ -90,9 +90,9 @@ public class ValidateGradient {
 	
 	
 
-	public static boolean validate(DifferentiableFunction2D f)
+	public static <T> boolean validate(DifferentiableFunction2D<T> f)
 	{return validate(f,0.0001,new Random());}
-	public static boolean validate(DifferentiableFunction2D f,double threshold)
+	public static <T> boolean validate(DifferentiableFunction2D<T> f,double threshold)
 	{return validate(f,threshold,new Random());}
 	
 	
@@ -103,7 +103,7 @@ public class ValidateGradient {
 	 * @param rand
 	 * @return success or failure
 	 */
-	public static boolean validate(DifferentiableFunction2D f,double threshold, Random rand){
+	public static <T> boolean validate(DifferentiableFunction2D<T> f,double threshold, Random rand){
 		double delta = 0.0001;		
 		int num_trials = 10;		
 		boolean success = true;
@@ -112,7 +112,7 @@ public class ValidateGradient {
 
 		
 		for(int trials=0;trials<num_trials;trials++){
-			Object input = f.generateRandomInput(rand);
+			T input = f.generateRandomInput(rand);
 
 			//compute analytic gradient
 			OutputAndJacobian out = f.evaluate(input);

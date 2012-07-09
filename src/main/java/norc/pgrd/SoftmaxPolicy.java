@@ -14,13 +14,13 @@ import norc.State;
  * 
  * @author Jeshua Bratman
  */
-public class SoftmaxPolicy implements DifferentiablePolicy {
-  protected DifferentiableQFunction planner;
+public class SoftmaxPolicy<T extends State> implements DifferentiablePolicy<T> {
+  protected DifferentiableQFunction<T> planner;
   protected double temperature;
   protected double[] policy;
   protected double[][] log_grad_policy;
 
-  public SoftmaxPolicy(DifferentiableQFunction planner, double temperature){
+  public SoftmaxPolicy(DifferentiableQFunction<T> planner, double temperature){
     this.planner = planner;
     this.temperature = temperature;
     this.policy = null;		
@@ -38,7 +38,7 @@ public class SoftmaxPolicy implements DifferentiablePolicy {
    *      |actions| x |theta| Jacobian of policy w.r.t theta
    *       so, dy[a][i] = dmu(s,a)/dtheta_i (e.g. each dy[a] is the gradient for action a)
    */
-  public OutputAndJacobian evaluate(State st) {
+  public OutputAndJacobian evaluate(T st) {
     OutputAndJacobian qdq = this.planner.evaluate(st);
     double[][] grad_Q = qdq.dy;
     double[] Q = qdq.y;
@@ -84,8 +84,6 @@ public class SoftmaxPolicy implements DifferentiablePolicy {
   //Differentiable Function Interface
 
   @Override
-  public OutputAndJacobian evaluate(Object st) {return evaluate(((State)st));}
-  @Override
   public int numParams() {
     return this.planner.numParams();
   }
@@ -106,7 +104,7 @@ public class SoftmaxPolicy implements DifferentiablePolicy {
     return ret;
   }
   @Override
-  public Object generateRandomInput(Random rand) {
+  public T generateRandomInput(Random rand) {
     return planner.generateRandomInput(rand);
   }
 }

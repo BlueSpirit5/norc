@@ -3,14 +3,14 @@ package norc;
  * Provides basic functionality for the agent/environment interaction loop.
  * @author Jeshua Bratman
  */
-public class SimpleDriver {
+public class SimpleDriver<T extends State> {
 	public Simulator sim;
-	public Agent ag;
-	public State curr_state;
-	public State last_state;
+	public Agent<T> ag;
+	public T curr_state;
+	public T last_state;
 	public int last_action;
 	
-	public SimpleDriver(Simulator sim, Agent ag){
+	public SimpleDriver(Simulator sim, Agent<T> ag){
 		this.sim = sim;
 		this.ag = ag;
 		this.curr_state = null;
@@ -22,8 +22,10 @@ public class SimpleDriver {
 	 * Take step in environment and provided resulting
 	 * state/reward to agent.
 	 */
-	public void step(){
-		curr_state = sim.getState();
+	
+	@SuppressWarnings("unchecked")
+	public void step(){		
+		curr_state = (T)sim.getState();
 		double reward = sim.getReward();
 		int action = last_action;
 		

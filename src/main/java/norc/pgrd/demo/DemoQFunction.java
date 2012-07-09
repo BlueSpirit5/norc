@@ -8,7 +8,7 @@ import norc.domains.demo.DemoState;
 import norc.pgrd.DifferentiableQFunction;
 
 
-public class DemoQFunction implements DifferentiableQFunction {
+public class DemoQFunction implements DifferentiableQFunction<DemoState> {
 	private int num_params;
 	private int num_actions;
 	private int num_states;
@@ -63,10 +63,9 @@ public class DemoQFunction implements DifferentiableQFunction {
 	public double[] getParams() {
 	  return theta;
 	}
-
 	
 	@Override
-	public OutputAndJacobian evaluate(State inp) {
+	public OutputAndJacobian evaluate(DemoState inp) {
 		OutputAndJacobian ret = new OutputAndJacobian();
 		ret.y = this.getQ(inp);
 		ret.dy = this.getGradQ(inp);
@@ -74,13 +73,9 @@ public class DemoQFunction implements DifferentiableQFunction {
 	}
 	
 	@Override
-	public Object generateRandomInput(Random rand){		
+	public DemoState generateRandomInput(Random rand){		
 		return new DemoState(rand.nextInt(DemoSim.maze.width()),rand.nextInt(DemoSim.maze.height()));		
 	}
 
-  @Override
-  public OutputAndJacobian evaluate(Object input) {
-    return evaluate((State)input);
-  }
 
 }

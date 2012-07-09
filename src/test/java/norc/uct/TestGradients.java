@@ -6,6 +6,7 @@ import java.util.Random;
 
 
 import norc.domains.demo.DemoSim;
+import norc.domains.demo.DemoState;
 import norc.pgrd.RewardDifferentiableUCT;
 import norc.pgrd.SoftmaxPolicy;
 import norc.pgrd.ValidateGradient;
@@ -29,7 +30,7 @@ public class TestGradients {
 	@Test
 	public void testSoftmaxGradient() {
 	  DemoQFunction qf = new DemoQFunction();
-	  SoftmaxPolicy policy = new SoftmaxPolicy(qf, 10);
+	  SoftmaxPolicy<DemoState> policy = new SoftmaxPolicy<DemoState>(qf, 10);
 	  assertTrue(ValidateGradient.validate(policy));      
 	}
 	
@@ -42,8 +43,8 @@ public class TestGradients {
 		for(int depth = 1; depth<3; depth++){
 			System.out.println("Depth: "+depth);
 			double gamma = .95;	
-			RewardDifferentiableUCT planner = 
-					new RewardDifferentiableUCT(sim, rf, trajectories, depth, gamma, rand);			
+			RewardDifferentiableUCT<DemoState> planner = 
+					new RewardDifferentiableUCT<DemoState> (sim, rf, trajectories, depth, gamma, rand);			
 			assertTrue(ValidateGradient.validate(planner,.01,rand));
 		}
 	}
@@ -57,9 +58,9 @@ public class TestGradients {
     int depth = 1;
     double temperature = .02;
     double gamma = .95; 
-    RewardDifferentiableUCT planner = 
-        new RewardDifferentiableUCT(sim, rf, trajectories, depth, gamma, rand);
-    SoftmaxPolicy policy = new SoftmaxPolicy(planner, temperature);
+    RewardDifferentiableUCT<DemoState>  planner = 
+        new RewardDifferentiableUCT<DemoState> (sim, rf, trajectories, depth, gamma, rand);
+    SoftmaxPolicy<DemoState>  policy = new SoftmaxPolicy<DemoState> (planner, temperature);
     assertTrue(ValidateGradient.validate(policy,0.001,rand));    
   }
 }
