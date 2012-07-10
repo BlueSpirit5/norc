@@ -3,6 +3,7 @@ package norc.pgrd;
 import java.util.Random;
 
 import norc.Agent;
+import norc.Learner;
 import norc.State;
 import norc.Utils;
 
@@ -10,6 +11,7 @@ import norc.Utils;
 public class Agent_OLGARB<T extends State> implements Agent<T> {
 	
 	private DifferentiableQFunction<T> qf;
+	private Learner<T> 	               learner;
 	private SoftmaxPolicy<T>           policy;
 	private OLGARB<T>                  policy_gradient;
 		
@@ -26,16 +28,23 @@ public class Agent_OLGARB<T extends State> implements Agent<T> {
 	 * @param use_baseline -- use the baseline estimate (otherwise this is GPOMDP)
 	 */
 	public Agent_OLGARB(DifferentiableQFunction<T> qf,
+					Learner<T> learner,
 			        double alpha, double temperature,			        
 			        double gamma, boolean use_baseline, 
 			        Random random){
 		this.random = random;
+		this.learner = learner;
 		policy          = new SoftmaxPolicy<T>(qf, temperature);
 		policy_gradient = new OLGARB<T>(policy,alpha,gamma,use_baseline);
 		this.qf = qf;
 	}
 	
-	
+	public Agent_OLGARB(DifferentiableQFunction<T> qf,
+	        double alpha, double temperature,			        
+	        double gamma, boolean use_baseline, 
+	        Random random){
+		this(qf,null,alpha,temperature,gamma,use_baseline,random);
+	}
 	/**
 	 * Plans from given state, updates reward parameters, returns chosen action
 	 * @param st     -- current state
@@ -47,8 +56,9 @@ public class Agent_OLGARB<T extends State> implements Agent<T> {
 		return Utils.sampleMultinomial(policy.getCurrentPolicy().y,this.random);
 	}
 	public int step(T st1, int a1, T st2, double reward){
-		this.policy_gradient.learn(st1, a1, reward);		
-		
+		this.policy_gradient.learn(st1, a1, reward);
+		if(learner!=null)
+			learner.learn(st1, a1,reward, st2);
 		int new_action;
 		if(st2.isAbsorbing()){
 		  this.policy_gradient.initEpisode();

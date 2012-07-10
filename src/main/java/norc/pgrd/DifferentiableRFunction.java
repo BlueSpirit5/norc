@@ -22,6 +22,6 @@ extends RewardFunction, DifferentiableFunction1D<SAS<TState>>{
 	 * @param state2
 	 * @return numParams length vector
 	 */
-    public double[] getGradR(TState state1, int action, TState state2);  
+    public double[] getGradR(TState state1, int action, TState state2);
       
 }

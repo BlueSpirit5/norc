@@ -23,7 +23,6 @@ public class DemoRFunction implements DifferentiableRFunction<DemoState> {
 	private double[] theta;
 	private double[] dtheta;
 	
-	
 	public DemoRFunction(){
 		this.num_params = DemoSim.maze.width() * DemoSim.maze.height();
 		this.theta = new double[num_params];
