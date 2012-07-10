@@ -25,7 +25,7 @@ public class SimpleDriver<T extends State> {
 	
 	@SuppressWarnings("unchecked")
 	public void step(){		
-		curr_state = (T)sim.getState();
+		curr_state = (T)sim.getState().copy();
 		double reward = sim.getReward();
 		int action = last_action;
 		

@@ -5,7 +5,7 @@ import java.util.Random;
 
 import norc.Simulator;
 import norc.State;
-import norc.SASTriple;
+import norc.SAS;
 import norc.uct.UCT;
 import norc.uct.UCTNodes.*;
 
@@ -152,7 +152,7 @@ public OutputAndJacobian evaluate(T st) {
   }
   @Override
   public T generateRandomInput(Random rand) {
-	  SASTriple<T> rt = rf.generateRandomInput(rand);
+	  SAS<T> rt = rf.generateRandomInput(rand);
 	  return rt.state2;
   }
 }

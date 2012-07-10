@@ -2,7 +2,7 @@ package norc.pgrd.demo;
 
 import java.util.Random;
 
-import norc.SASTriple;
+import norc.SAS;
 import norc.State;
 import norc.domains.demo.DemoSim;
 import norc.domains.demo.DemoState;
@@ -73,7 +73,7 @@ public class DemoRFunction implements DifferentiableRFunction<DemoState> {
 
 	
 	@Override
-	public OutputAndGradient evaluate(SASTriple<DemoState> inp) {
+	public OutputAndGradient evaluate(SAS<DemoState> inp) {
 		OutputAndGradient ret = new OutputAndGradient();
 		ret.y = this.getReward(inp.state1, inp.action, inp.state2);
 		ret.dy = this.getGradR(inp.state1, inp.action, inp.state2);
@@ -81,8 +81,8 @@ public class DemoRFunction implements DifferentiableRFunction<DemoState> {
 	}
 	
 	@Override
-	public SASTriple<DemoState> generateRandomInput(Random rand){
-		SASTriple<DemoState> inp = new SASTriple<DemoState>();
+	public SAS<DemoState> generateRandomInput(Random rand){
+		SAS<DemoState> inp = new SAS<DemoState>();
 		inp.state1 = new DemoState(rand.nextInt(DemoSim.maze.width()),rand.nextInt(DemoSim.maze.height()));
 		inp.action = rand.nextInt(DemoSim.num_actions);
 		//random state2

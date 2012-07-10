@@ -1,6 +1,6 @@
 package norc.pgrd;
 
-import norc.SASTriple;
+import norc.SAS;
 import norc.State;
 
 /**
@@ -14,7 +14,7 @@ import norc.State;
  *
  */
 public interface DifferentiableRFunction<TState extends State> 
-extends RewardFunction, DifferentiableFunction1D<SASTriple<TState>>{	
+extends RewardFunction, DifferentiableFunction1D<SAS<TState>>{	
 	/**
 	 * Compute gradient of the reward function w.r.t. parameters theta for a given (s,a,s) triple.
 	 * @param state1

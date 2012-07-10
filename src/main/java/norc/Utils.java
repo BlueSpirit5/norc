@@ -18,7 +18,20 @@ public class Utils {
 		throw new IllegalArgumentException("Probabilities do not sum to 1.");
 	}
 	
-	
+
+	 
+  public static int epsilonGreedy(double[] Q, double epsilon, Random random){	  
+    double p = random.nextDouble();
+    if(p < epsilon) return random.nextInt(Q.length);
+    else return argmax(Q,random);    
+  }
+  public static int argmax(double[] Q,Random rand){
+    Maximizer mn = new Maximizer(rand);
+    for(int i=0;i<Q.length;i++)
+      mn.add(Q[i], i);
+    return mn.getMaxIndex();
+  }
+  
 	/**
 	 * Maximizer is used to find max and argmax
 	 * of double values with tie breaking. 
