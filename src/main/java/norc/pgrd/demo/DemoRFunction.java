@@ -37,7 +37,7 @@ public class DemoRFunction implements DifferentiableRFunction<DemoState> {
 		DemoState s = (DemoState)s2;
 		double objective_reward = DemoSim.getReward(s);
 		int t = s.y * DemoSim.maze.width() + s.x;		
-		return this.theta[t] + objective_reward; 
+		return this.theta[t]+ objective_reward; 
 	}
 
 	@Override

@@ -107,9 +107,6 @@ public class ValidateGradient {
 		double delta = 0.0001;		
 		int num_trials = 10;		
 		boolean success = true;
-    final double[] theta1 = f.getParams().clone();
-    double[] theta = f.getParams().clone();
-
 		
 		for(int trials=0;trials<num_trials;trials++){
 			T input = f.generateRandomInput(rand);
@@ -125,35 +122,19 @@ public class ValidateGradient {
 			      dy[i][j] = out.dy[i][j];
 			
 			//compute finite difference gradient
-			double[][] dh = new double[dy.length][dy[0].length];
-			for(int i=0;i<dh.length;i++) Arrays.fill(dh[i],0);			
-			
-			for(int tind=0;tind<theta.length;tind++){
-				//evaluate at theta[tind] += delta
-				theta[tind] = theta1[tind] + delta;
-				f.setParams(theta);
-				double[] y1 = f.evaluate(input).y.clone();
-				//evaluate at theta[tind] -= delta
-				theta[tind] = theta1[tind] - delta;
-				f.setParams(theta);
-				double[] y2 = f.evaluate(input).y.clone();
-				//check difference between errors
-				for(int aind=0;aind<dh.length;aind++){
-					dh[aind][tind] = (y1[aind]-y2[aind])/(2*delta);
-				}
-				//reset
-				theta[tind] = theta1[tind];
-			}
-			//reset theta
-			f.setParams(theta1);			
+			double[][] dh = fdGrad(f,delta,input);
 			double numer=0,denom=0;
-			for(int i=0;i<theta.length;i++){
+			for(int i=0;i<dh.length;i++){
 				for(int aind=0;aind<dh.length;aind++){	
 					numer += Math.pow(dy[aind][i] - dh[aind][i],2);
 					denom += Math.pow(dy[aind][i] + dh[aind][i],2);
 				}
 			}
-			double diff = numer/denom;
+			double diff;
+			if(denom == 0 && numer == 0)
+				diff = 0;
+			else
+				diff = numer/denom;
 			success = success & (diff < threshold);
 			//------
 			//return results
@@ -163,7 +144,7 @@ public class ValidateGradient {
 				for(int q = 0; q<Math.min(2, dh.length);q++){
 					int num_shown = 0;
 
-					for(int i=0;i<theta.length;i++){
+					for(int i=0;i<dh.length;i++){
 						if(dy[0][i] != dh[0][i]){
 							num_shown++;
 							System.out.printf("dy[%d]: %.3f ",i,dy[q][i]);
@@ -177,7 +158,7 @@ public class ValidateGradient {
 				//----------------
 				for(int q = 0; q<Math.min(2, dh.length);q++){
 					int num_shown = 0;
-					for(int i=0;i<theta.length;i++){
+					for(int i=0;i<dh.length;i++){
 						if(dy[0][i] != dh[0][i]){
 							num_shown++;
 							System.out.printf("dh[%d]: %.3f ",i,dh[q][i]);
@@ -193,5 +174,32 @@ public class ValidateGradient {
 			}			
 		}
 		return success;		
+	}
+	
+	//==================================================
+	public static <T> double[][] fdGrad(DifferentiableFunction2D<T> f,double delta, T input){
+		OutputAndJacobian out = f.evaluate(input);
+		double[][] dh = new double[out.dy.length][out.dy[0].length];
+		final double[] theta1 = f.getParams().clone();
+		double[] theta = f.getParams().clone();
+		for(int tind=0;tind<theta.length;tind++){
+			//evaluate at theta[tind] += delta
+			theta[tind] = theta1[tind] + delta;
+			f.setParams(theta);
+			double[] y1 = f.evaluate(input).y.clone();
+			//evaluate at theta[tind] -= delta
+			theta[tind] = theta1[tind] - delta;
+			f.setParams(theta);
+			double[] y2 = f.evaluate(input).y.clone();
+			//check difference between errors
+			for(int aind=0;aind<dh.length;aind++){
+				dh[aind][tind] = (y1[aind]-y2[aind])/(2*delta);
+			}
+			//reset
+			theta[tind] = theta1[tind];
+		}
+		//reset theta
+		f.setParams(theta1);
+		return dh;
 	}
 }

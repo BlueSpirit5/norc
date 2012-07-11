@@ -13,7 +13,7 @@ import java.awt.geom.Rectangle2D;
 public class MazeGFX 
 {   
     public static Dimension draw(Graphics2D g2d, Dimension size, Maze maze, int agx, int agy,
-    		double[][] overlay) 
+    		double[][] overlay, int[][] policy) 
     {
         int width = maze.width();
         int height = maze.height();
@@ -54,7 +54,20 @@ public class MazeGFX
             	
                 g2d.setColor(floor_color);
                 Rectangle2D square = new Rectangle2D.Double(x*box_size, y*box_size, box_size, box_size);   
-                g2d.fill(square);                
+                g2d.fill(square);
+                if(policy!=null){
+                	String s;
+                	if(policy[x][y] == 0)
+                		s = "^";
+                	else if(policy[x][y] == 1)
+                		s = "v";
+                	else if(policy[x][y] == 2)
+                		s = ">";
+                	else
+                		s = "<";
+                	centerText(s,null, g2d, black,
+                			x*box_size, y*box_size, box_size, box_size);
+                }
             }
         }
         g2d.setStroke(grid_stroke);
@@ -86,7 +99,7 @@ public class MazeGFX
         
        
         //DRAW AGENT
-        g2d.setColor(new Color(255,255,255));
+        g2d.setColor(new Color(200,255,220));
         g2d.fillOval(
                 (int)(agx*box_size+.1*box_size),
                 (int)(agy*box_size+.1*box_size),

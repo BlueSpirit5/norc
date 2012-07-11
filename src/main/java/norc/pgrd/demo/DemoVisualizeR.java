@@ -48,7 +48,7 @@ public class DemoVisualizeR {
 				}
 			}
 			
-			MazeGFX.draw(g2d, this.getSize(), maze, agx, agy,overlay);
+			MazeGFX.draw(g2d, this.getSize(), maze, agx, agy,overlay, null);
 		}
 	}
 	

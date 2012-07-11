@@ -119,4 +119,39 @@ public class Utils {
 		}
 
 	}
+	
+	
+	//printing
+	public static <T> void print(T[] a){
+		for(int i=0;i<a.length;i++)
+			System.out.printf("%.3f ",a[i]);
+	}
+	public static <T> void println(T[] a){
+		print(a);
+		System.out.println();		
+	}
+	public static <T> void print(T[][] a){
+		for(int i=0;i<a.length;i++)
+			println(a[i]);		
+	}
+	public static <T> void println(T[][] a){
+		print(a);
+		System.out.println();
+	}
+	public static void print(double[] a){
+		for(int i=0;i<a.length;i++)
+			System.out.printf("%.3f ",a[i]);
+	}
+	public static void println(double[] a){
+		print(a);
+		System.out.println();		
+	}
+	public static void print(double[][] a){
+		for(int i=0;i<a.length;i++)
+			println(a[i]);		
+	}
+	public static void println(double[][] a){
+		print(a);
+		System.out.println();
+	}
 }
