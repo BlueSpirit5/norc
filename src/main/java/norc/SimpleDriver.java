@@ -32,7 +32,7 @@ public class SimpleDriver<T extends State> {
 		if(last_state == null)
 			action = ag.step(curr_state);
 		else
-			action = ag.step(last_state,action,curr_state,reward);
+			action = ag.step(last_state,action,reward,curr_state);
 		
 		if(!curr_state.isAbsorbing()){
 			sim.takeAction(action);

@@ -25,8 +25,7 @@ public class DemoQFunction implements DifferentiableQFunction<DemoState> {
 		this.dQ = new double[num_actions][num_params];
 	}
 	
-	public double[] getQ(State s) {
-		DemoState st = (DemoState)s;
+	public double[] getQ(DemoState st) {
 		int t = st.y * DemoSim.maze.width() + st.x;		
 		for(int a=0;a<num_actions;a++){
 		  Q[a] = this.theta[a*this.num_states+t];

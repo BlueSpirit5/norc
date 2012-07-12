@@ -50,7 +50,7 @@ public class Agent_PGRDUCT<T extends State> implements Agent<T> {
 		policy.evaluate(st1);
 		return Utils.sampleMultinomial(policy.getCurrentPolicy().y,this.random);
 	}
-	public int step(T st1, int a1, T st2, double reward){
+	public int step(T st1, int a1, double reward, T st2){
 		this.policy_gradient.learn(st1, a1, reward);		
 		int new_action;
 		if(st2.isAbsorbing()){

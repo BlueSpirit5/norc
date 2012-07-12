@@ -17,7 +17,7 @@ public class DemoPGRD {
 	public static void main(String[] args) throws InterruptedException {
 		// real world
 		Random rand1 = new Random();
-		int sz = 6;
+		int sz = 5;
 		Maze maze = new Maze(Maze.randomMaze(sz, sz, rand1));   
 		maze.setCell(sz-1, sz-1, Maze.G);
 		DemoSim.maze = maze;

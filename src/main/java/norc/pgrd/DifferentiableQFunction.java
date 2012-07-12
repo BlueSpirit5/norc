@@ -1,12 +1,13 @@
 package norc.pgrd;
 
+import norc.QFunction;
 import norc.State;
 
 /**
  * Planner that computes Q value and gradients w.r.t. parameters theta.
  * @author Jeshua Bratman
  */
-public interface DifferentiableQFunction<T extends State> extends DifferentiableFunction2D<T> {		
+public interface DifferentiableQFunction<T extends State> extends DifferentiableFunction2D<T>, QFunction<T> {		
 	/**
 	 * Update Q values and Q value gradients for a given state.
      *  y = Q(s,*)

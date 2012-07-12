@@ -47,6 +47,10 @@ public class RewardDifferentiableUCT<T extends State> extends UCT implements Dif
   }
   
   
+  public double[] getQ(T st){
+	  return this.evaluate(st).y;
+  }
+  
   /**
    * Plan starting from given state and return the Q value and Gradients for each action.
    * 
@@ -59,7 +63,7 @@ public class RewardDifferentiableUCT<T extends State> extends UCT implements Dif
    *       Jacobian of the Q function w.r.t. reward function parameters theta
    *       |actions| x |theta| matrix where dQdt[a][i] is dQ(s,a) / dtheta_i
    */
-public OutputAndJacobian evaluate(T st) {
+  public OutputAndJacobian evaluate(T st) {
     cache.clearHash();		
     State state = (State)st;
     this.rootState = state.copy();
