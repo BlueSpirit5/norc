@@ -19,6 +19,7 @@ public class DemoPGRD {
 		Random rand1 = new Random();
 		int sz = 5;
 		Maze maze = new Maze(Maze.randomMaze(sz, sz, rand1));   
+		//Maze maze = new Maze(new int[sz][sz]);
 		maze.setCell(sz-1, sz-1, Maze.G);
 		DemoSim.maze = maze;
 		DemoSim simReal = new DemoSim(rand1);
@@ -28,10 +29,10 @@ public class DemoPGRD {
 		DemoSim simPlan = new DemoSim(rand2);
 		DemoRFunction rf = new DemoRFunction();
 				
-		int trajectories = 100;		
+		int trajectories = 500;		
 		int depth = 4;
-		double alpha = .0001;
-		double temperature = .05;
+		double alpha = .001;
+		double temperature = .1;
 		double gamma = .95;
 		Agent_PGRDUCT<DemoState> pgrd = new Agent_PGRDUCT<DemoState>(simPlan,rf,alpha,temperature,trajectories,depth,gamma,rand2);		
 		DemoVisualizeR p = new DemoVisualizeR(DemoSim.maze,pgrd.getRF());

@@ -18,7 +18,7 @@ public class DemoVisualizeR {
 	Maze maze;
 	int agx;
 	int agy;
-	RewardFunction ag;
+	RewardFunction<DemoState> ag;
 	
 	class Canvas extends JPanel{
 		private static final long serialVersionUID = 1L;
@@ -52,7 +52,7 @@ public class DemoVisualizeR {
 		}
 	}
 	
-	public DemoVisualizeR(Maze maze, RewardFunction ag){
+	public DemoVisualizeR(Maze maze, RewardFunction<DemoState> ag){
 		frame = new JFrame();
 		panel = new Canvas();
 		this.ag = ag;

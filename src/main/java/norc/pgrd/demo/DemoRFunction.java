@@ -3,7 +3,6 @@ package norc.pgrd.demo;
 import java.util.Random;
 
 import norc.SAS;
-import norc.State;
 import norc.domains.demo.DemoSim;
 import norc.domains.demo.DemoState;
 import norc.pgrd.DifferentiableRFunction;
@@ -33,10 +32,9 @@ public class DemoRFunction implements DifferentiableRFunction<DemoState> {
 	 * Reward is theta[s2] + objective_reward
 	 */
 	@Override
-	public double getReward(State s1, int a, State s2) {
-		DemoState s = (DemoState)s2;
-		double objective_reward = DemoSim.getReward(s);
-		int t = s.y * DemoSim.maze.width() + s.x;		
+	public double getReward(DemoState s1, int a, DemoState s2) {
+		double objective_reward = DemoSim.getReward(s2);
+		int t = s2.y * DemoSim.maze.width() + s2.x;		
 		return this.theta[t]+ objective_reward; 
 	}
 

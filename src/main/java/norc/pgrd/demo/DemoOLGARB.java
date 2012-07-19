@@ -3,7 +3,6 @@ package norc.pgrd.demo;
 import java.util.Random;
 
 import norc.SimpleDriver;
-import norc.State;
 import norc.domains.demo.DemoSim;
 import norc.domains.demo.DemoState;
 import norc.domains.demo.Maze;
@@ -32,10 +31,9 @@ public class DemoOLGARB {
 		//OLGARB with a tabular Q function is simply a tabular policy gradient
 		DemoQFunction qf = new DemoQFunction();
 		final Agent_OLGARB<DemoState> agent = new Agent_OLGARB<DemoState>(qf,alpha,temperature,gamma,true,rand2);				
-		class qrf implements RewardFunction{
-			public double getReward(State st1, int action, State st2){
-				DemoState st = ((DemoState)st2);
-				double[] Q = agent.getQF().evaluate(st).y;
+		class qrf implements RewardFunction<DemoState>{
+			public double getReward(DemoState st1, int action, DemoState st2){
+				double[] Q = agent.getQF().evaluate(st2).y;
 				double max = Double.NEGATIVE_INFINITY;
 				for(int i=0;i<DemoSim.num_actions;i++)
 					if(Q[i] > max)
